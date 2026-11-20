@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guest Speaker Form · Rochester Christian Church</title>
+<meta name="description" content="For guest speakers at Rochester Christian Church: your details, event dates, what you need from us, honorarium and travel.">
+<meta name="theme-color" content="#05142b">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="assets/logo-blue.png">
+<link rel="preload" href="assets/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: 'Poppins'; font-weight: 400; font-display: swap; src: url(assets/poppins-400.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-weight: 500; font-display: swap; src: url(assets/poppins-500.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-weight: 600; font-display: swap; src: url(assets/poppins-600.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-weight: 700; font-display: swap; src: url(assets/poppins-700.woff2) format('woff2'); }
+
+  /* Colours taken from rochesterchristian.church */
+  :root {
+    --navy: #05142b; --navy-2: #0d2244; --paper: #fafafa; --card: #fff;
+    --ink: #05142b; --ink-2: #3c4658; --ink-3: #5e6778;
+    --field: #f1f2f5; --line: #e6e8ec;
+    --blue: #2589e5; --blue-ink: #145fa4; --blue-soft: #e5f1fc;
+    --amber: #8a5a00; --amber-soft: #fff4dc;
+    --red: #b3261e; --red-soft: #fbe9e8;
+    --ease: cubic-bezier(.2,.8,.2,1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: 'Poppins', system-ui, -apple-system, sans-serif; color: var(--ink); background: var(--paper); line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+  main { flex: 1; width: 100%; }
+  a { color: var(--blue-ink); }
+  :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 10px; }
+  [hidden] { display: none !important; }
+
+  .band { background: var(--navy); color: #fff; padding-bottom: 120px; }
+  .nav { max-width: 1120px; margin: 0 auto; padding: 22px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .nav img { width: 62px; height: auto; display: block; }
+  .pill-light { display: inline-flex; align-items: center; font: 500 15px 'Poppins', sans-serif; color: var(--navy); background: #fff; border-radius: 34px; padding: 9px 20px; text-decoration: none; transition: background .2s; }
+  .pill-light:hover { background: #e9edf3; }
+  .hero { max-width: 760px; margin: 0 auto; padding: clamp(28px, 6vw, 56px) 16px 0; text-align: center; }
+  .kicker { font-weight: 600; font-size: clamp(15px, 2vw, 18px); opacity: .92; }
+  .hero h1 { font-weight: 700; font-size: clamp(36px, 7vw, 60px); line-height: 1.1; letter-spacing: -.01em; margin: 10px 0 16px; }
+  .hero p { font-size: clamp(15.5px, 2.1vw, 17.5px); color: rgba(255,255,255,.82); max-width: 36em; margin: 0 auto; }
+  .facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; }
+  .facts span { font-size: 14px; font-weight: 500; border: 1.5px solid rgba(255,255,255,.35); border-radius: 34px; padding: 6px 14px; }
+
+  .wrap { max-width: 760px; margin: -84px auto 0; padding: 0 16px 64px; position: relative; }
+  form, .done { background: var(--card); border-radius: 22px; box-shadow: 0 2px 4px rgba(5,20,43,.04), 0 24px 60px rgba(5,20,43,.12); }
+  .sec { padding: clamp(24px, 5vw, 40px); }
+  .sec + .sec { border-top: 1px solid var(--line); }
+  .sec-h { display: flex; align-items: center; gap: 12px; }
+  .sec-h b { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 14px; font-weight: 600; display: grid; place-items: center; }
+  .sec-h h2 { font-weight: 700; font-size: clamp(20px, 3vw, 24px); line-height: 1.25; }
+  .sec-p { color: var(--ink-3); font-size: 15px; margin: 6px 0 22px 42px; }
+  @media (max-width: 520px) { .sec-p { margin-left: 0; } }
+
+  .grid { display: grid; gap: 22px; }
+  @media (min-width: 580px) { .two { grid-template-columns: 1fr 1fr; } }
+
+  .f { display: grid; gap: 8px; border: 0; min-width: 0; }
+  .f > label, .f > legend { font-size: 15px; font-weight: 600; padding: 0; }
+  .f small.opt { font-weight: 400; color: var(--ink-3); font-size: 13.5px; margin-left: 4px; }
+  .req { color: var(--blue); margin-left: 2px; }
+  .help { font-size: 13.5px; color: var(--ink-3); }
+  input[type=text], input[type=email], input[type=tel], input[type=date], textarea {
+    font: inherit; font-size: 16px; color: var(--ink); width: 100%;
+    background: var(--field); border: 2px solid transparent; border-radius: 12px; padding: 12px 16px;
+    transition: border-color .2s, background .2s, box-shadow .2s; -webkit-appearance: none; appearance: none;
+  }
+  input[type=date] { min-height: 52px; }
+  textarea { min-height: 120px; resize: vertical; line-height: 1.55; }
+  input::placeholder, textarea::placeholder { color: #8a92a1; }
+  input:hover, textarea:hover { background: #eaecf0; }
+  input:focus, textarea:focus { outline: none; background: #fff; border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
+  .f.bad input[type=text], .f.bad input[type=email], .f.bad input[type=date], .f.bad textarea { border-color: var(--red); background: var(--red-soft); }
+  .err { font-size: 13.5px; color: var(--red); display: none; }
+  .f.bad .err { display: block; }
+
+  /* choice cards (radio / checkbox) */
+  .choices { display: grid; gap: 10px; }
+  @media (min-width: 580px) { .choices.cols { grid-template-columns: 1fr 1fr; } }
+  .opt-card { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 12px; background: var(--field); border: 2px solid transparent; cursor: pointer; font-size: 15px; transition: background .2s, border-color .2s; }
+  .opt-card:hover { background: #eaecf0; }
+  .opt-card input { flex: none; width: 20px; height: 20px; accent-color: var(--navy); margin: 0; }
+  .opt-card:has(input:checked) { background: var(--blue-soft); border-color: var(--blue); }
+  .opt-card:has(input:focus-visible) { outline: 3px solid var(--blue); outline-offset: 2px; }
+  .opt-card .who { color: var(--ink-3); }
+  .opt-card.other { flex-wrap: wrap; }
+  .opt-card.other input[type=text] { flex: 1 1 180px; padding: 8px 12px; background: #fff; }
+  .f.bad .choices .opt-card { border-color: var(--red); }
+
+  .callout { display: flex; gap: 12px; align-items: flex-start; background: var(--amber-soft); color: #4a3300; border-radius: 14px; padding: 14px 16px; font-size: 14.5px; }
+  .callout svg { flex: none; margin-top: 2px; color: var(--amber); }
+  .callout b { color: #3b2800; }
+  .callout.info { background: var(--blue-soft); color: var(--navy); }
+  .callout.info svg { color: var(--blue-ink); }
+
+  /* photo */
+  .drop { position: relative; display: grid; place-items: center; text-align: center; gap: 10px; min-height: 210px; padding: 26px; border-radius: 18px; cursor: pointer; border: 2px dashed #c9ced8; background: var(--field); transition: border-color .2s, background .2s, transform .2s var(--ease); }
+  .drop:hover, .drop.over { border-color: var(--blue); background: var(--blue-soft); }
+  .drop.over { transform: scale(1.01); }
+  .drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .drop .ic { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--navy); color: #fff; }
+  .drop strong { font-size: 16px; font-weight: 600; }
+  .drop strong u { color: var(--blue-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .drop span { font-size: 13.5px; color: var(--ink-3); }
+  .f.bad .drop { border-color: var(--red); background: var(--red-soft); }
+  .preview { display: grid; grid-template-columns: 136px 1fr; gap: 20px; align-items: center; padding: 14px; border-radius: 18px; background: var(--field); }
+  .preview img { width: 136px; height: 136px; object-fit: cover; border-radius: 14px; background: #e3e6eb; }
+  .preview .meta { min-width: 0; }
+  .preview .nm { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .preview .sz { font-size: 13.5px; color: var(--ink-3); margin: 2px 0 12px; }
+  @media (max-width: 420px) { .preview { grid-template-columns: 96px 1fr; } .preview img { width: 96px; height: 96px; } }
+  .btn-outline { font: 600 14px 'Poppins', sans-serif; color: var(--navy); background: #fff; border: 2px solid var(--navy); border-radius: 34px; padding: 7px 18px; cursor: pointer; transition: background .2s, color .2s; }
+  .btn-outline:hover { background: var(--navy); color: #fff; }
+
+  .sunday { background: var(--navy); color: #fff; border-radius: 18px; padding: 22px; display: grid; gap: 14px; }
+  .sunday .row { display: flex; gap: 14px; align-items: flex-start; }
+  .sunday .row svg { flex: none; margin-top: 3px; opacity: .85; }
+  .sunday .row b { display: block; font-weight: 600; }
+  .sunday .row span { color: rgba(255,255,255,.8); font-size: 14.5px; }
+  .sunday a { color: #fff; }
+
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .foot { padding: clamp(24px, 5vw, 40px); border-top: 1px solid var(--line); display: grid; gap: 14px; justify-items: center; }
+  .submit { font: 700 17px 'Poppins', sans-serif; color: #fff; background: var(--navy); border: 0; border-radius: 34px; padding: 16px 40px; cursor: pointer; width: 100%; max-width: 380px; display: inline-flex; justify-content: center; align-items: center; gap: 10px; transition: background .2s, transform .15s var(--ease); }
+  .submit:hover { background: var(--navy-2); }
+  .submit:active { transform: scale(.98); }
+  .submit[disabled] { cursor: progress; opacity: .85; }
+  .spin { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid currentColor; border-right-color: transparent; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .note { font-size: 13.5px; color: var(--ink-3); text-align: center; }
+  .alert { display: none; width: 100%; background: var(--red-soft); color: var(--red); border-radius: 12px; padding: 12px 16px; font-size: 14.5px; }
+  .alert.show { display: block; }
+
+  .done { padding: clamp(40px, 8vw, 64px) clamp(24px, 6vw, 48px); text-align: center; animation: rise .5s var(--ease); }
+  .done .check { width: 76px; height: 76px; margin: 0 auto 22px; border-radius: 50%; display: grid; place-items: center; background: var(--blue-soft); color: var(--blue-ink); }
+  .done h2 { font-weight: 700; font-size: clamp(28px, 5vw, 36px); line-height: 1.2; margin-bottom: 10px; }
+  .done p { color: var(--ink-2); max-width: 30em; margin: 0 auto; }
+  .done .btn-outline { margin-top: 28px; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  footer.site { background: var(--navy); color: rgba(255,255,255,.8); text-align: center; padding: 40px 16px; font-size: 14px; }
+  footer.site img { width: 48px; height: auto; margin: 0 auto 12px; display: block; }
+  footer.site b { display: block; color: #fff; font-weight: 600; font-size: 16px; margin-bottom: 2px; }
+  footer.site a { color: #fff; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="band">
+  <nav class="nav">
+    <a href="https://www.rochesterchristian.church/" aria-label="Rochester Christian Church home"><img src="assets/logo-white.png" alt="RCC"></a>
+    <a class="pill-light" href="https://www.rochesterchristian.church/">Our website</a>
+  </nav>
+  <section class="hero">
+    <div class="kicker">Guest Speakers</div>
+    <h1>Speaker Form</h1>
+    <p>Thank you for serving with us. Please fill this out to the best of your ability so we can have everything ready for you.</p>
+    <div class="facts"><span>Media due 72 hours before</span><span>Please send us your W9</span></div>
+  </section>
+</div>
+
+<main class="wrap">
+  <form id="form" novalidate>
+    <!-- 1 -->
+    <div class="sec">
+      <div class="sec-h"><b>1</b><h2>About you</h2></div>
+      <p class="sec-p">So we know who's coming and how to reach you.</p>
+      <div class="grid">
+        <div class="grid two">
+          <div class="f" data-req="text" data-name="name">
+            <label for="name">Speaker name<span class="req">*</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" maxlength="120">
+            <div class="err">Please add your name.</div>
+          </div>
+          <div class="f" data-req="email" data-name="email">
+            <label for="email">Email<span class="req">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" maxlength="200">
+            <div class="err">Please check your email address.</div>
+          </div>
+        </div>
+        <div class="grid two">
+          <div class="f">
+            <label for="phone">Cell phone <small class="opt">optional</small></label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="40">
+          </div>
+          <div class="f">
+            <label for="address">Mailing address <small class="opt">optional</small></label>
+            <input id="address" name="address" type="text" autocomplete="street-address" maxlength="300">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="sec">
+      <div class="sec-h"><b>2</b><h2>Your event</h2></div>
+      <p class="sec-p">When you'll be with us.</p>
+      <div class="grid">
+        <div class="grid two">
+          <div class="f" data-req="text" data-name="startDate">
+            <label for="startDate">Event start date<span class="req">*</span></label>
+            <input id="startDate" name="startDate" type="date">
+            <div class="err">Please choose the start date.</div>
+          </div>
+          <div class="f" data-name="endDate">
+            <label for="endDate">Event end date <small class="opt">if more than one day</small></label>
+            <input id="endDate" name="endDate" type="date">
+            <div class="err">The end date can't be before the start date.</div>
+          </div>
+        </div>
+        <fieldset class="f" data-req="radio" data-name="livestream">
+          <legend>Can your presentation be live streamed?<span class="req">*</span></legend>
+          <div class="choices cols">
+            <label class="opt-card"><input type="radio" name="livestream" value="Yes"><span>Yes</span></label>
+            <label class="opt-card"><input type="radio" name="livestream" value="No"><span>No</span></label>
+          </div>
+          <div class="err">Please choose Yes or No.</div>
+        </fieldset>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="sec">
+      <div class="sec-h"><b>3</b><h2>What do you need from us?</h2></div>
+      <p class="sec-p">Equipment, media and table space.</p>
+      <div class="grid">
+        <fieldset class="f">
+          <legend>Will you be using any of these? <small class="opt">choose all that apply</small></legend>
+          <div class="choices cols">
+            <label class="opt-card"><input type="checkbox" name="equipment" value="Handheld microphone"><span>Handheld microphone</span></label>
+            <label class="opt-card"><input type="checkbox" name="equipment" value="Headset microphone"><span>Headset microphone <span class="who">(hands free)</span></span></label>
+            <label class="opt-card"><input type="checkbox" name="equipment" value="Podium"><span>Podium</span></label>
+            <label class="opt-card"><input type="checkbox" name="equipment" value="Cafe table and chair instead of a podium"><span>Cafe table and chair <span class="who">(instead of a podium)</span></span></label>
+            <label class="opt-card"><input type="checkbox" name="equipment" value="Props"><span>Props</span></label>
+            <label class="opt-card other"><input type="checkbox" name="equipment" value="__other"><span>Other</span><input type="text" id="equipmentOther" aria-label="Other equipment" placeholder="What?" maxlength="160"></label>
+          </div>
+        </fieldset>
+        <div class="f">
+          <label for="needs">Please describe what's needed <small class="opt">optional</small></label>
+          <div class="callout">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>
+            <div>We need your video, slides, props and other media <b>72 hours before the service</b>. Send it to <a href="mailto:tech@rcc4me.com">tech@rcc4me.com</a>.</div>
+          </div>
+          <textarea id="needs" name="needs" maxlength="3000" placeholder="Videos, slides, props, or anything else we should prepare"></textarea>
+        </div>
+        <fieldset class="f">
+          <legend>Do you need a table for products or materials?</legend>
+          <div class="choices cols">
+            <label class="opt-card"><input type="radio" name="table" value="Yes"><span>Yes</span></label>
+            <label class="opt-card"><input type="radio" name="table" value="No"><span>No</span></label>
+          </div>
+        </fieldset>
+        <div class="f">
+          <label for="comments">Additional comments <small class="opt">optional</small></label>
+          <textarea id="comments" name="comments" maxlength="3000" style="min-height:90px"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="sec">
+      <div class="sec-h"><b>4</b><h2>Honorarium &amp; travel</h2></div>
+      <p class="sec-p">Help us take care of you well.</p>
+      <div class="grid">
+        <div class="grid two">
+          <div class="f">
+            <label for="honorarium">Your honorarium request <small class="opt">optional</small></label>
+            <input id="honorarium" name="honorarium" type="text" maxlength="120" placeholder="e.g. $500">
+          </div>
+          <div class="f">
+            <label for="payableTo">Who should the check be made out to? <small class="opt">optional</small></label>
+            <input id="payableTo" name="payableTo" type="text" maxlength="200" placeholder="Your name or your organization">
+          </div>
+        </div>
+        <div class="f">
+          <label for="travel">Your travel arrangements <small class="opt">optional</small></label>
+          <textarea id="travel" name="travel" maxlength="3000" style="min-height:90px" placeholder="Driving, flying, who's coming with you, etc."></textarea>
+        </div>
+        <div class="grid two">
+          <div class="f">
+            <label for="flight">Airline and flight number <small class="opt">if flying</small></label>
+            <input id="flight" name="flight" type="text" maxlength="200" placeholder="e.g. Delta 1234">
+          </div>
+          <div class="f">
+            <label for="arrival">Arrival and departure dates and times <small class="opt">if flying</small></label>
+            <input id="arrival" name="arrival" type="text" maxlength="300" placeholder="e.g. Arrive Sat 3:15 pm, leave Mon 9:40 am">
+          </div>
+        </div>
+        <fieldset class="f">
+          <legend>Will you need hotel arrangements?</legend>
+          <div class="choices cols">
+            <label class="opt-card"><input type="radio" name="hotel" value="Yes"><span>Yes</span></label>
+            <label class="opt-card"><input type="radio" name="hotel" value="No"><span>No</span></label>
+          </div>
+        </fieldset>
+        <div class="f" id="nightsWrap" data-name="nights" hidden>
+          <label for="nights">How many nights?<span class="req">*</span></label>
+          <input id="nights" name="nights" type="text" inputmode="numeric" maxlength="60" placeholder="e.g. 2 (Saturday and Sunday)">
+          <div class="err">Please tell us how many nights.</div>
+        </div>
+        <div class="f">
+          <label for="snacks">Favorite snacks and drinks <small class="opt">optional</small></label>
+          <textarea id="snacks" name="snacks" maxlength="1000" style="min-height:80px" placeholder="So we can have them ready for you"></textarea>
+        </div>
+        <div class="f">
+          <label for="otherNeeds">Any other needs? <small class="opt">optional</small></label>
+          <textarea id="otherNeeds" name="otherNeeds" maxlength="3000" style="min-height:80px"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="sec">
+      <div class="sec-h"><b>5</b><h2>One more thing</h2></div>
+      <p class="sec-p">So we can send your honorarium.</p>
+      <div class="sunday">
+        <div class="row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+          <div><b>Please send your organization's W9</b><span>Email it to <a href="mailto:nick@rochesterchristian.church?subject=W9%20for%20guest%20speaker%20honorarium">nick@rochesterchristian.church</a>.</span></div>
+        </div>
+        <div class="row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <div><b>Rochester Christian Church</b><span><a href="https://maps.google.com/?q=4435+N+Rochester+Rd,+Rochester,+MI+48306" target="_blank" rel="noopener">4435 N Rochester Rd, Rochester, MI 48306</a></span></div>
+        </div>
+      </div>
+      <div class="hp" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off"></div>
+    </div>
+
+    <div class="foot">
+      <div class="alert" id="alert" role="alert"></div>
+      <button class="submit" id="submit" type="submit"><span id="submitLabel">Submit</span></button>
+      <p class="note">We'll email you a copy of your answers.</p>
+    </div>
+  </form>
+
+  <div class="done" id="done" hidden>
+    <div class="check" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+    <h2 id="doneTitle">Thank you!</h2>
+    <p>We received your form. A copy is on its way to <b id="doneEmail"></b>. Please send any media to <a href="mailto:tech@rcc4me.com">tech@rcc4me.com</a> at least 72 hours before the service, and your organization's W9 to <a href="mailto:nick@rochesterchristian.church">nick@rochesterchristian.church</a>. We look forward to having you!</p>
+    <button type="button" class="btn-outline" id="again">Fill out another form</button>
+  </div>
+</main>
+
+<footer class="site">
+  <img src="assets/logo-white.png" alt="">
+  <b>Rochester Christian Church</b>
+  Love God. Love People. · <a href="https://www.rochesterchristian.church/">rochesterchristian.church</a>
+</footer>
+
+<script>
+// Paste the Apps Script Web app URL here (Deploy > Manage deployments > Web app URL).
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxaAj-XrxJBl3AI4_Ju_tVuo0hSCqNME06T_SC3y8qQfJl3Q0bSCjsP-kGcK7834xQL/exec';
+
+(function () {
+  var form = document.getElementById('form');
+  var alertBox = document.getElementById('alert');
+  var submit = document.getElementById('submit');
+  var label = document.getElementById('submitLabel');
+  var nightsWrap = document.getElementById('nightsWrap');
+
+  function q(sel) { return form.querySelector(sel); }
+  function val(id) { return document.getElementById(id).value.trim(); }
+  function radio(name) { var r = q('input[name="' + name + '"]:checked'); return r ? r.value : ''; }
+  function checks(name) { return Array.prototype.map.call(form.querySelectorAll('input[name="' + name + '"]:checked'), function (c) { return c.value; }); }
+
+  // Typing in the "Other" box ticks it.
+  document.getElementById('equipmentOther').addEventListener('input', function (e) {
+    var box = e.target.parentNode.querySelector('input[name="equipment"]');
+    if (e.target.value.trim()) box.checked = true;
+  });
+
+  // "How many nights?" only when a hotel is needed.
+  form.addEventListener('change', function (e) {
+    if (e.target.name === 'hotel') {
+      var yes = radio('hotel') === 'Yes';
+      nightsWrap.hidden = !yes;
+      if (yes) nightsWrap.dataset.req = 'text'; else { delete nightsWrap.dataset.req; nightsWrap.classList.remove('bad'); }
+    }
+    if (e.target.id === 'startDate' && !document.getElementById('endDate').value) document.getElementById('endDate').min = e.target.value;
+    var f = e.target.closest('.f'); if (f) f.classList.remove('bad');
+  });
+  form.addEventListener('input', function (e) { var f = e.target.closest('.f'); if (f) f.classList.remove('bad'); });
+
+  function gather() {
+    var equipment = checks('equipment').map(function (v) { return v === '__other' ? (val('equipmentOther') ? 'Other: ' + val('equipmentOther') : '') : v; }).filter(Boolean);
+    return {
+      name: val('name'), email: val('email'), phone: val('phone'), address: val('address'),
+      startDate: val('startDate'), endDate: val('endDate'), livestream: radio('livestream'),
+      equipment: equipment.join(', '), needs: val('needs'), table: radio('table'), comments: val('comments'),
+      honorarium: val('honorarium'), payableTo: val('payableTo'), travel: val('travel'),
+      flight: val('flight'), arrival: val('arrival'), hotel: radio('hotel'),
+      nights: radio('hotel') === 'Yes' ? val('nights') : '', snacks: val('snacks'), otherNeeds: val('otherNeeds'),
+      company: val('company')
+    };
+  }
+  function validate(v) {
+    var first = null;
+    form.querySelectorAll('[data-req]').forEach(function (f) {
+      var n = f.dataset.name, ok;
+      if (f.dataset.req === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email);
+      else ok = !!v[n];
+      f.classList.toggle('bad', !ok);
+      if (!ok && !first) first = f;
+    });
+    var endF = q('[data-name="endDate"]');
+    var badEnd = v.endDate && v.startDate && v.endDate < v.startDate;
+    endF.classList.toggle('bad', !!badEnd);
+    if (badEnd && !first) first = endF;
+    if (first) {
+      first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      var inp = first.querySelector('input, textarea');
+      if (inp) setTimeout(function () { inp.focus({ preventScroll: true }); }, 300);
+    }
+    return !first;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    alertBox.classList.remove('show');
+    var v = gather();
+    if (!validate(v)) return;
+    submit.disabled = true;
+    label.textContent = 'Sending…';
+    var sp = document.createElement('span'); sp.className = 'spin'; sp.setAttribute('aria-hidden', 'true'); submit.prepend(sp);
+    send(v).then(function (res) {
+      if (!res || !res.ok) throw new Error((res && res.error) || 'Something went wrong. Please try again.');
+      document.getElementById('doneTitle').textContent = 'Thank you, ' + v.name.split(/[\s&]/)[0] + '!';
+      document.getElementById('doneEmail').textContent = v.email;
+      form.hidden = true;
+      document.getElementById('done').hidden = false;
+      document.getElementById('done').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }).catch(function (err) {
+      alertBox.textContent = err.message === 'Failed to fetch' ? 'We couldn’t reach our server. Please check your connection and try again.' : err.message;
+      alertBox.classList.add('show');
+    }).then(function () {
+      submit.disabled = false;
+      var s = submit.querySelector('.spin'); if (s) s.remove();
+      label.textContent = 'Submit';
+    });
+  });
+
+  function send(v) {
+    if (!SCRIPT_URL) {
+      if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || location.protocol === 'file:') {
+        return new Promise(function (r) { setTimeout(function () { r({ ok: true }); }, 1200); });
+      }
+      return Promise.resolve({ ok: false, error: 'This form isn’t open yet. Please check back soon, or email the church office.' });
+    }
+    return fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(v), headers: { 'Content-Type': 'text/plain;charset=utf-8' } })
+      .then(function (r) { return r.json(); });
+  }
+
+  document.getElementById('again').addEventListener('click', function () {
+    form.reset(); nightsWrap.hidden = true; delete nightsWrap.dataset.req;
+    document.getElementById('done').hidden = true; form.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
